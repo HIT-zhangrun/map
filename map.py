@@ -22,12 +22,11 @@ for zone in lat_lng:
     else:
         dis = zone
         print(lat, dis)
-    num = num + 1
-    folium.Circle(location = lat,
+        folium.Circle(location = lat,
             radius = dis,
             color = 'blue',
             fill = True,).add_to(map)
-
+    num = num + 1
 map.add_child(folium.LatLngPopup())
 map.save("special_height_zones.html")
 
