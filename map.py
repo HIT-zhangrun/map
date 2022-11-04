@@ -55,9 +55,9 @@ for zone in lat_lng:
             radius = dis,
             color = 'yellow',
             fill = True,).add_to(map)
-        folium.Marker(location = [lat_2, lat_1],
-            popup = name,
-            icon = folium.Icon(icon = 'cloud')).add_to(map)
+        # folium.Marker(location = [lat_2, lat_1],
+        #     popup = name,
+        #     icon = folium.Icon(icon = 'cloud')).add_to(map)
     num = num + 1
 
 map.add_child(folium.LatLngPopup())
