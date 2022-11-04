@@ -51,11 +51,11 @@ for zone in lat_lng:
     elif (num % 3 == 2):
         name = zone
         print(lat_1, lat_2, name)
-        folium.Circle(location = [lat_1, lat_2],
+        folium.Circle(location = [lat_2, lat_1],
             radius = dis,
-            color = 'blue',
+            color = 'yellow',
             fill = True,).add_to(map)
-        folium.Marker(location = [lat_1, lat_2],
+        folium.Marker(location = [lat_2, lat_1],
             popup = name,
             icon = folium.Icon(icon = 'cloud')).add_to(map)
     num = num + 1
