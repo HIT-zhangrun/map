@@ -33,8 +33,31 @@ for zone in lat_lng:
             popup = name,
             icon = folium.Icon(icon = 'cloud')).add_to(map)
     num = num + 1
+
+
+with open("airport.json", "r", encoding='utf-8') as zones:
+    lat_lng = json.load(zones)
+
+
+lat_1 = [0]
+lat_2 = [1]
+dis = 55000
+for zone in lat_lng:
+    if (num % 3 == 0):
+        lat_1 = zone
+    elif (num % 3 == 1):
+        lat_2 = zone
+    elif (num % 3 == 2):
+        name = zone
+        print(lat, dis, name)
+        folium.Circle(location = lat,
+            radius = dis,
+            color = 'blue',
+            fill = True,).add_to(map)
+        folium.Marker(location = lat,
+            popup = name,
+            icon = folium.Icon(icon = 'cloud')).add_to(map)
+    num = num + 1
+
 map.add_child(folium.LatLngPopup())
 map.save("special_height_zones.html")
-
-
-
