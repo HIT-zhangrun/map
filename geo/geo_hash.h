@@ -4,7 +4,7 @@
 typedef struct
 {
     double lat;//纬度
-    double lon;//精度
+    double lon;//经度
 } gps_t;
 
 #endif
