@@ -92,7 +92,7 @@ void geo_hash(gps_t gps, uint8_t *geo_hash, uint32_t acc)
     {
         geo_hash_lon_bit = geo_hash_bit / 2 + 1;
     }
-    printf("geo acc: %d, lat bit: %d, lon bit: %d", acc, geo_hash_lat_bit, geo_hash_lon_bit);
+    printf("geo acc: %d, lat bit: %d, lon bit: %d\r\n", acc, geo_hash_lat_bit, geo_hash_lon_bit);
 
     uint8_t lat_bin[100];
     uint8_t lon_bin[100];
@@ -116,19 +116,5 @@ void geo_hash(gps_t gps, uint8_t *geo_hash, uint32_t acc)
     printf("geo hash:");
     print_colomn(geo_hash_encode, acc, C);
 
-
-}
-
-int main()
-{
-    gps_t gps_test;
-    gps_test.lat = 39.923201;
-    gps_test.lon = 116.390705;
-    geo_hash(gps_test, NULL, 10);
-
-    gps_t gps;
-    gps.lat = 39.9257460000;
-    gps.lon = 116.5998310000;
-    geo_hash(gps, NULL, 8);
-    return 0;
+    memcpy(geo_hash, geo_hash_encode, acc);
 }

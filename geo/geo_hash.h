@@ -7,4 +7,6 @@ typedef struct
     double lon;//经度
 } gps_t;
 
+void geo_hash(gps_t gps, uint8_t *geo_hash, uint32_t acc);
+
 #endif
