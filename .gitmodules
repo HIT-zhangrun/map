@@ -1,3 +1,0 @@
-[submodule "geo-country"]
-	path = geo-country
-	url = git@github.com:datasets/geo-countries.git

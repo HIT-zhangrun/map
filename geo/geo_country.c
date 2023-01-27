@@ -96,7 +96,7 @@ cJSON *prepare_parse_json(const char *filePath)
 
 void parse_geo_country()
 {
-    char *filename = "../geo-country/data/countries.geojson";
+    char *filename = "../geo-countries/data/countries.geojson";
     cJSON *pJson = NULL;
     cJSON *pTemp = NULL;
     cJSON *country_p = NULL;
@@ -107,7 +107,7 @@ void parse_geo_country()
     if(NULL == pJson)
     {
         printf("parse json failed\n");
-        return;
+        goto error;
     }
 
     country_p = cJSON_GetObjectItem(pJson, "features");
@@ -124,13 +124,13 @@ void parse_geo_country()
 
         country_code_p = cJSON_GetObjectItem(country_code_p, "ADMIN");
 
-        // printf("country code %s\n", country_code_p->valuestring);
+        printf("%d country code %s\n", i, country_code_p->valuestring);
 
         country_geo[i].country_code = (char *)malloc(sizeof(country_code_p->valuestring) + 1);
         if (country_geo[i].country_code == NULL)
         {
             printf("NULL\n");
-            break;
+            goto error;
         }
         strcpy(country_geo[i].country_code, country_code_p->valuestring);
 
@@ -145,7 +145,7 @@ void parse_geo_country()
         if (country_geo[i].region == NULL)
         {
             printf("NULL\n");
-            break;
+            goto error;
         }
 
         for (uint32_t j = 0; j < gps_size; j++)
@@ -155,13 +155,6 @@ void parse_geo_country()
 
             int32_t gps_point_num = cJSON_GetArraySize(pTemp);
             // printf("gps point num %d\n", gps_point_num);
-
-
-
-
-
-
-            
 
             country_geo[i].region[j].gps_num = gps_point_num;
 
@@ -174,4 +167,10 @@ void parse_geo_country()
 
     cJSON_Delete(pJson);
     pJson = NULL;
+
+    return;
+
+error:
+    printf("parse error\n");
+    return;
 }
