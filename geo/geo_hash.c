@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdlib.h>
 #include "geo_hash.h"
 
 #define MAX_ACC 100
@@ -31,7 +32,7 @@ void print_colomn(uint8_t *buf, uint32_t len, print_type_e print_type)
             break;
         }
     }
-    printf("\r\n");
+    printf("\n");
 }
 
 void half_code(double left_val, double right_val, double val, uint32_t bits, uint8_t *buf)
@@ -92,7 +93,7 @@ void geo_hash(gps_t gps, uint8_t *geo_hash, uint32_t acc)
     {
         geo_hash_lon_bit = geo_hash_bit / 2 + 1;
     }
-    printf("geo acc: %d, lat bit: %d, lon bit: %d\r\n", acc, geo_hash_lat_bit, geo_hash_lon_bit);
+    printf("geo acc: %d, lat bit: %d, lon bit: %d \n", acc, geo_hash_lat_bit, geo_hash_lon_bit);
 
     uint8_t lat_bin[100];
     uint8_t lon_bin[100];
@@ -102,7 +103,7 @@ void geo_hash(gps_t gps, uint8_t *geo_hash, uint32_t acc)
     uint8_t lat_lon_bin[200];
     lat_lon_bin_code(lat_bin, lon_bin, geo_hash_lat_bit, geo_hash_lon_bit, lat_lon_bin);
 
-    printf("[geo hash bin]:\r\n");
+    printf("[geo hash bin]: \n");
     printf("lat:");
     print_colomn(lat_bin, geo_hash_lat_bit, D);
     printf("lon:");
