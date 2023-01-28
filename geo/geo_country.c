@@ -7,6 +7,8 @@
 #include "cJSON.h"
 #include "geo_country.h"
 
+static country_geo_t country_geo[255];
+
 size_t get_file_size(const char *filepath)
 {
     /*check input para*/
@@ -114,8 +116,6 @@ void parse_geo_country()
     int32_t size = cJSON_GetArraySize(country_p);
     printf("country num = %d\n", size);
 
-    country_geo_t country_geo[255];
-
     for (uint32_t i = 0; i < size; i++)
     {
         pTemp = cJSON_GetArrayItem(country_p, i);
@@ -154,7 +154,7 @@ void parse_geo_country()
             pTemp = pTemp->child;
 
             int32_t gps_point_num = cJSON_GetArraySize(pTemp);
-            printf("gps point num %d\n", gps_point_num);
+            // printf("gps point num %d\n", gps_point_num);
 
             country_geo[i].region[j].gps_num = gps_point_num;
 
@@ -174,7 +174,6 @@ void parse_geo_country()
                 gps_point = gps_point->next;
                 if (gps_point == NULL)
                 {
-                    printf("NULL %d\n", k);
                     break;
                 }
                 gps_point_lat_lon = gps_point->child;
@@ -198,4 +197,9 @@ void parse_geo_country()
 error:
     printf("parse error\n");
     return;
+}
+
+country_geo_t *get_parse_geo()
+{
+    return country_geo;
 }

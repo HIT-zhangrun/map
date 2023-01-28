@@ -16,5 +16,6 @@ typedef struct
 } country_geo_t;
 
 void parse_geo_country();
+country_geo_t *get_parse_geo();
 
 #endif
