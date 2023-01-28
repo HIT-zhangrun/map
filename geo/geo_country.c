@@ -154,14 +154,39 @@ void parse_geo_country()
             pTemp = pTemp->child;
 
             int32_t gps_point_num = cJSON_GetArraySize(pTemp);
-            // printf("gps point num %d\n", gps_point_num);
+            printf("gps point num %d\n", gps_point_num);
 
             country_geo[i].region[j].gps_num = gps_point_num;
 
-            pTemp = pTemp->child->child;
-            // gps point
-            // printf("%.20lf ,", pTemp->valuedouble);
-            // printf("%.20lf\n", pTemp->next->valuedouble);
+            country_geo[i].region[j].gps = (gps_t *)malloc(sizeof(gps_t) * gps_point_num);
+            if(country_geo[i].region[j].gps == NULL)
+            {
+                goto error;
+            }
+
+            cJSON *gps_point = pTemp->child;
+            cJSON *gps_point_lat_lon = gps_point->child;
+
+            for (uint32_t k = 0; k < gps_point_num; k++)
+            {
+                country_geo[i].region[j].gps[k].lat = gps_point_lat_lon->valuedouble;
+                country_geo[i].region[j].gps[k].lon = gps_point_lat_lon->next->valuedouble;
+                gps_point = gps_point->next;
+                if (gps_point == NULL)
+                {
+                    printf("NULL %d\n", k);
+                    break;
+                }
+                gps_point_lat_lon = gps_point->child;
+            }
+            // // gps point 0
+            // printf("%.20lf ,", gps_point_lat_lon->valuedouble);
+            // printf("%.20lf\n", gps_point_lat_lon->next->valuedouble);
+            // // gps point 1
+            // gps_point = gps_point->next;
+            // gps_point_lat_lon = gps_point->child;
+            // printf("%.20lf ,", gps_point_lat_lon->valuedouble);
+            // printf("%.20lf\n", gps_point_lat_lon->next->valuedouble);
         }
     }
 
