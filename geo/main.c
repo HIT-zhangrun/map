@@ -48,7 +48,7 @@
 
 int main()
 {
-    // uint8_t buf[100];
+    uint8_t buf[100];
     parse_geo_country();
 
 
@@ -64,8 +64,5 @@ int main()
     // geo_hash(gps, buf, 8);
 
     test();
-
-    // is_point_in_country(gps);
-
     return 0;
 }

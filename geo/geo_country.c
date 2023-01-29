@@ -224,7 +224,6 @@ char *is_point_in_country(gps_t point)
 
             if (ret)
             {
-                printf("find it\n");
                 return geo[i].country_code;
             }
         }
@@ -233,23 +232,55 @@ char *is_point_in_country(gps_t point)
     return NULL;
 }
 
+char *is_geo_hash_in_country(uint8_t *geo_hash, uint32_t len)
+{
+    gps_t gps[4];
+
+    geo_hash_gps(geo_hash, len, gps);
+
+    char *point1 = is_point_in_country(gps[0]);
+    if (point1 == NULL)
+    {
+        return NULL;
+    }
+    // printf("p1 %s\n", point1);
+    char *point2 = is_point_in_country(gps[1]);
+    if (point2 == NULL)
+    {
+        return NULL;
+    }
+    // printf("p2 %s\n", point2);
+    char *point3 = is_point_in_country(gps[2]);
+    if (point3 == NULL)
+    {
+        return NULL;
+    }
+    // printf("p3 %s\n", point3);
+    char *point4 = is_point_in_country(gps[3]);
+    if (point4 == NULL)
+    {
+        return NULL;
+    }
+    // printf("p4 %s\n", point4);
+
+    if (0 == strcmp(point1, point2) && 0 == strcmp(point3, point4) && 0 == strcmp(point1, point3))
+    {
+        return point1;
+    }
+
+    return NULL;
+}
 
 void test()
 {
-    gps_t gps;
-    // gps.lat = 39.9257460000;
-    // gps.lon = 116.5998310000;
-    gps.lat = 36.268;
-    gps.lon = -5.3535850;
-
-    char *test = is_point_in_country(gps);
-
-    if (test != NULL)
+    uint8_t geo_hash[] = "wx4gjk32";
+    for (uint32_t i = 0; i < 8; i++)
     {
-        printf("%s\n", test);
+        char *test = is_geo_hash_in_country(geo_hash, i);
+        if (test != NULL)
+        {
+            printf("find it %d in %s\n", i, test);
+        }
     }
-    else
-    {
-        printf("not find\n");
-    }
+    // is_geo_hash_in_country();
 }
