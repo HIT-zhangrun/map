@@ -127,7 +127,10 @@ void parse_geo_country()
 
         printf("%d country code %s\n", i, country_code_p->valuestring);
 
-        country_geo[i].country_code = (char *)malloc(sizeof(country_code_p->valuestring) + 1);
+        country_code_p = cJSON_GetObjectItem(pTemp, "properties");
+        country_code_p = cJSON_GetObjectItem(country_code_p, "ISO_A3");
+
+        country_geo[i].country_code = (char *)malloc(4);
         if (country_geo[i].country_code == NULL)
         {
             printf("NULL\n");
@@ -170,8 +173,8 @@ void parse_geo_country()
 
             for (uint32_t k = 0; k < gps_point_num; k++)
             {
-                country_geo[i].region[j].gps[k].lat = gps_point_lat_lon->valuedouble;
-                country_geo[i].region[j].gps[k].lon = gps_point_lat_lon->next->valuedouble;
+                country_geo[i].region[j].gps[k].lon = gps_point_lat_lon->valuedouble;
+                country_geo[i].region[j].gps[k].lat = gps_point_lat_lon->next->valuedouble;
                 gps_point = gps_point->next;
                 if (gps_point == NULL)
                 {
@@ -209,42 +212,44 @@ char *is_point_in_country(gps_t point)
 {
     country_geo_t *geo = get_parse_geo();
 
-    for (uint32_t i = 0; i < 100; i++)
+    for (uint32_t i = 0; i < 254; i++)
     {
-        for (uint32_t j = 0; j < geo[i].region_num; j++)
+        uint32_t region_num = get_parse_geo()[i].region_num;
+        for (uint32_t j = 0; j < region_num; j++)
         {
-            uint32_t ret = point_in_polygon(geo[i].region[j].gps_num, geo[i].region[j].gps, point);
-            // printf("%d, %d, %d\n", i, j, ret);
+            uint32_t gps_num = get_parse_geo()[i].region[j].gps_num;
+            gps_t *gps = get_parse_geo()[i].region[j].gps;
+
+            uint32_t ret = point_in_polygon(gps_num, gps, point);
+
             if (ret)
             {
+                printf("find it\n");
                 return geo[i].country_code;
             }
         }
     }
-    return 0;
+
+    return NULL;
 }
 
 
 void test()
 {
-    // gps_t gps;
+    gps_t gps;
     // gps.lat = 39.9257460000;
     // gps.lon = 116.5998310000;
-    printf("begin\n");
-    printf("%d\n", get_parse_geo()[42].region_num);
+    gps.lat = 36.268;
+    gps.lon = -5.3535850;
 
-    // if (get_parse_geo()[42].region[50] == NULL)
-    // {
-    //     printf("error");
-    // }
+    char *test = is_point_in_country(gps);
 
-    // printf("%d\n", get_parse_geo()[42].region[50].gps_num);
-
-    // printf("%0.10lf\n", get_parse_geo()[42].region[0].gps[0].lat);
-
-    // for (uint32_t i = 0; i < 70; i++)
-    // {
-    //     uint32_t ret = point_in_polygon(get_parse_geo()[42].region[i].gps_num, get_parse_geo()[42].region[i].gps, gps);
-    //     printf("%d\n", ret);
-    // }
+    if (test != NULL)
+    {
+        printf("%s\n", test);
+    }
+    else
+    {
+        printf("not find\n");
+    }
 }

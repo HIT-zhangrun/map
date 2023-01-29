@@ -54,33 +54,38 @@ uint8_t is_need_reverse(gps_t *gps, uint32_t num)
 
 uint32_t point_in_polygon(uint32_t num, gps_t *points, gps_t gps)
 {
-    gps_t *polygon = (gps_t *)malloc(sizeof(gps_t) * num);
-    if (polygon == NULL)
+    gps_t *polygon = NULL;
+    while (polygon == NULL)
     {
-        printf("point_in_polygon malloc null\n");
-        goto ret;
+        polygon = (gps_t *)malloc(sizeof(gps_t) * num);
     }
+
     memcpy(polygon, points, sizeof(gps_t) * num);
     gps_t point;
     memcpy(&point, &gps, sizeof(gps_t));
 
-    // if (is_need_reverse(polygon, num))
-    // {
-    //     reverse_gps(polygon, num);
-    //     reverse_gps(&point, 1);
-    // }
+    if (is_need_reverse(polygon, num))
+    {
+        reverse_gps(polygon, num);
+        reverse_gps(&point, 1);
+    }
+
     // 上边沿重合时没有算入内部
     uint32_t i, j, c = 0;
-    for (i = 0, j = num-1; i < num; j = i++) {
+    for (i = 0, j = num - 1; i < num; j = i++) {
         if ( ((polygon[i].lat > point.lat) != (polygon[j].lat > point.lat)) &&
         (point.lon < (polygon[j].lon - polygon[i].lon) * (point.lat - polygon[i].lat) / (polygon[j].lat - polygon[i].lat) + polygon[i].lon) )
-        c = !c;
+        {
+            c = !c;
+        }
     }
 
     free(polygon);
 
-ret:
+
     return c;
+error:
+    return 0;
 }
 
 // float test_x[] = {-170.0, 170.0, 170.0, -170.0};
