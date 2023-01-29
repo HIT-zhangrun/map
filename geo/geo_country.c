@@ -6,8 +6,9 @@
 #include "geo_hash.h"
 #include "cJSON.h"
 #include "geo_country.h"
+#include "math_lib.h"
 
-static country_geo_t country_geo[255];
+static country_geo_t country_geo[255] = {0};
 
 size_t get_file_size(const char *filepath)
 {
@@ -114,7 +115,7 @@ void parse_geo_country()
 
     country_p = cJSON_GetObjectItem(pJson, "features");
     int32_t size = cJSON_GetArraySize(country_p);
-    printf("country num = %d\n", size);
+    // printf("country num = %d\n", size);
 
     for (uint32_t i = 0; i < size; i++)
     {
@@ -202,4 +203,48 @@ error:
 country_geo_t *get_parse_geo()
 {
     return country_geo;
+}
+
+char *is_point_in_country(gps_t point)
+{
+    country_geo_t *geo = get_parse_geo();
+
+    for (uint32_t i = 0; i < 100; i++)
+    {
+        for (uint32_t j = 0; j < geo[i].region_num; j++)
+        {
+            uint32_t ret = point_in_polygon(geo[i].region[j].gps_num, geo[i].region[j].gps, point);
+            // printf("%d, %d, %d\n", i, j, ret);
+            if (ret)
+            {
+                return geo[i].country_code;
+            }
+        }
+    }
+    return 0;
+}
+
+
+void test()
+{
+    // gps_t gps;
+    // gps.lat = 39.9257460000;
+    // gps.lon = 116.5998310000;
+    printf("begin\n");
+    printf("%d\n", get_parse_geo()[42].region_num);
+
+    // if (get_parse_geo()[42].region[50] == NULL)
+    // {
+    //     printf("error");
+    // }
+
+    // printf("%d\n", get_parse_geo()[42].region[50].gps_num);
+
+    // printf("%0.10lf\n", get_parse_geo()[42].region[0].gps[0].lat);
+
+    // for (uint32_t i = 0; i < 70; i++)
+    // {
+    //     uint32_t ret = point_in_polygon(get_parse_geo()[42].region[i].gps_num, get_parse_geo()[42].region[i].gps, gps);
+    //     printf("%d\n", ret);
+    // }
 }

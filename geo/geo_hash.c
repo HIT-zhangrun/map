@@ -72,6 +72,11 @@ void lat_lon_bin_code(uint8_t *lat_bin, uint8_t *lon_bin, uint32_t lat_len, uint
 
 uint8_t base32[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
+uint8_t get_base32(uint32_t index)
+{
+    return base32[index];
+}
+
 void base32_encode(uint8_t *lat_lon_bin, uint32_t len, uint8_t *buf)
 {
     for (uint32_t i = 0; i < len / 5; i++)
@@ -233,15 +238,15 @@ void geo_hash_gps(uint8_t *geo_hash, uint32_t len, gps_t *gps)
     gps[3].lon = lon_l;
 }
 
-void test()
-{
-    // uint8_t test_geo[] = "wx4g0ec1eb";
-    // gps_t gps[4];
+// void test()
+// {
+//     // uint8_t test_geo[] = "wx4g0ec1eb";
+//     // gps_t gps[4];
 
-    // geo_hash_gps(test_geo, 8, gps);
+//     // geo_hash_gps(test_geo, 8, gps);
 
-    // printf("%0.10lf, %0.10lf\n", gps[0].lat, gps[0].lon);
-    // printf("%0.10lf, %0.10lf\n", gps[1].lat, gps[1].lon);
-    // printf("%0.10lf, %0.10lf\n", gps[2].lat, gps[2].lon);
-    // printf("%0.10lf, %0.10lf\n", gps[3].lat, gps[3].lon);
-}
+//     // printf("%0.10lf, %0.10lf\n", gps[0].lat, gps[0].lon);
+//     // printf("%0.10lf, %0.10lf\n", gps[1].lat, gps[1].lon);
+//     // printf("%0.10lf, %0.10lf\n", gps[2].lat, gps[2].lon);
+//     // printf("%0.10lf, %0.10lf\n", gps[3].lat, gps[3].lon);
+// }
