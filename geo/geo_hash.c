@@ -119,3 +119,129 @@ void geo_hash(gps_t gps, uint8_t *geo_hash, uint32_t acc)
 
     memcpy(geo_hash, geo_hash_encode, acc);
 }
+
+uint8_t base32_hash_1[4][8] =
+{
+    {'b', 'c', 'f', 'g', 'u', 'v', 'y', 'z'},
+    {'8', '9', 'd', 'e', 's', 't', 'w', 'x'},
+    {'2', '3', '6', '7', 'k', 'm', 'q', 'r'},
+    {'0', '1', '4', '5', 'h', 'j', 'n', 'p'}
+};
+
+uint8_t base32_hash_2[8][4] =
+{
+    {'p', 'r', 'x', 'z'},
+    {'n', 'q', 'w', 'y'},
+    {'j', 'm', 't', 'v'},
+    {'h', 'k', 's', 'u'},
+    {'5', '7', 'e', 'g'},
+    {'4', '6', 'd', 'f'},
+    {'1', '3', '9', 'c'},
+    {'0', '2', '8', 'b'}
+};
+
+uint32_t find_char_in_colomn(uint8_t tar, uint8_t *buf, uint32_t len)
+{
+    uint32_t i = 0;
+
+    for (i = 0; i < len; i++)
+    {
+        if (buf[i] == tar)
+        {
+            break;
+        }
+    }
+
+    return i + 1;
+}
+
+void geo_hash_gps(uint8_t *geo_hash, uint32_t len, gps_t *gps)
+{
+    double lat_l = -90.0f;
+    double lat_r = 90.0f;
+    double lon_l = -180.0f;
+    double lon_r = 180.0f;
+
+    for (uint32_t i = 0; i < len; i++)
+    {
+        uint32_t index = 0;
+        uint32_t x, y = 0;
+        if (i % 2 == 0)//实际对应geo hash奇数位
+        {
+            index = find_char_in_colomn(geo_hash[i], (uint8_t *)base32_hash_1, sizeof(base32_hash_1));
+            y = index / 8;//行数
+            x = index % 8;
+            if (x != 0)
+            {
+                y++;
+            }
+            else
+            {
+                x += 8;
+            }
+
+            double lat_dis = lat_r - lat_l;
+            double lat_index = lat_dis / 4;
+            lat_r = lat_r - lat_index * (y - 1);
+            lat_l = lat_r - lat_index;
+
+            double lon_dis = lon_r - lon_l;
+            double lon_index = lon_dis / 8;
+            lon_l = lon_l + lon_index * (x - 1);
+            lon_r = lon_l + lon_index;
+
+            continue;
+        }
+        if (i % 2 == 1)//实际对应geo hash偶数位
+        {
+            index = find_char_in_colomn(geo_hash[i], (uint8_t *)base32_hash_2, sizeof(base32_hash_2));
+            y = index / 4;//行数
+            x = index % 4;
+            if (x != 0)
+            {
+                y++;
+            }
+            else
+            {
+                x += 4;
+            }
+
+            double lat_dis = lat_r - lat_l;
+            double lat_index = lat_dis / 8;
+            lat_r = lat_r - lat_index * (y - 1);
+            lat_l = lat_r - lat_index;
+
+            double lon_dis = lon_r - lon_l;
+            double lon_index = lon_dis / 4;
+            lon_l = lon_l + lon_index * (x - 1);
+            lon_r = lon_l + lon_index;
+
+            continue;
+        }
+    }
+
+    gps[0].lat = lat_r;
+    gps[0].lon = lon_l;
+
+    gps[1].lat = lat_r;
+    gps[1].lon = lon_r;
+
+    gps[2].lat = lat_l;
+    gps[2].lon = lon_r;
+
+    gps[3].lat = lat_l;
+    gps[3].lon = lon_l;
+}
+
+void test()
+{
+    // uint8_t test_geo[] = "wx4g0ec1eb";
+    // gps_t gps[4];
+
+    // geo_hash_gps(test_geo, 8, gps);
+
+    // printf("%0.10lf, %0.10lf\n", gps[0].lat, gps[0].lon);
+    // printf("%0.10lf, %0.10lf\n", gps[1].lat, gps[1].lon);
+    // printf("%0.10lf, %0.10lf\n", gps[2].lat, gps[2].lon);
+    // printf("%0.10lf, %0.10lf\n", gps[3].lat, gps[3].lon);
+}
