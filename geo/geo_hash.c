@@ -6,12 +6,6 @@
 
 #define MAX_ACC 100
 
-typedef enum print_type
-{
-    D = 0,
-    C,
-} print_type_e;
-
 void print_colomn(uint8_t *buf, uint32_t len, print_type_e print_type)
 {
     for (uint32_t i = 0; i < len; i++)
@@ -28,9 +22,18 @@ void print_colomn(uint8_t *buf, uint32_t len, print_type_e print_type)
             printf("%c", buf[i]);
             break;
         }
+        case NO_ENTER_C:
+        {
+            printf("%c", buf[i]);
+            break;
+        }
         default:
             break;
         }
+    }
+    if (print_type == NO_ENTER_C)
+    {
+        return;
     }
     printf("\n");
 }
@@ -70,7 +73,7 @@ void lat_lon_bin_code(uint8_t *lat_bin, uint8_t *lon_bin, uint32_t lat_len, uint
     }
 }
 
-uint8_t base32[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+static uint8_t base32[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
 uint8_t get_base32(uint32_t index)
 {

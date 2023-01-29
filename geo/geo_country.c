@@ -234,34 +234,33 @@ char *is_point_in_country(gps_t point)
 
 char *is_geo_hash_in_country(uint8_t *geo_hash, uint32_t len)
 {
+    if (geo_hash == NULL || len == 0)
+    {
+        return NULL;
+    }
+
     gps_t gps[4];
 
     geo_hash_gps(geo_hash, len, gps);
 
     char *point1 = is_point_in_country(gps[0]);
-    if (point1 == NULL)
-    {
-        return NULL;
-    }
-    // printf("p1 %s\n", point1);
+
     char *point2 = is_point_in_country(gps[1]);
-    if (point2 == NULL)
-    {
-        return NULL;
-    }
-    // printf("p2 %s\n", point2);
+
     char *point3 = is_point_in_country(gps[2]);
-    if (point3 == NULL)
-    {
-        return NULL;
-    }
-    // printf("p3 %s\n", point3);
+
     char *point4 = is_point_in_country(gps[3]);
-    if (point4 == NULL)
+
+    if (point1 == NULL && point2 == NULL && point3 == NULL && point4 == NULL)
+    {
+        char *no_country = "NONE";
+        return no_country;
+    }
+
+    if (point1 == NULL || point2 == NULL || point3 == NULL || point4 == NULL)
     {
         return NULL;
     }
-    // printf("p4 %s\n", point4);
 
     if (0 == strcmp(point1, point2) && 0 == strcmp(point3, point4) && 0 == strcmp(point1, point3))
     {
@@ -282,5 +281,4 @@ void test()
             printf("find it %d in %s\n", i, test);
         }
     }
-    // is_geo_hash_in_country();
 }

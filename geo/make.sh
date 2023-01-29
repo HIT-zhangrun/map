@@ -2,4 +2,4 @@
 
 gcc ./*.c -o run -O1
 
-./run && ./run > geo.log
+./run > geo.log

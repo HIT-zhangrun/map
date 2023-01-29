@@ -8,43 +8,34 @@
 #include "geo_country.h"
 #include "math_lib.h"
 
-// void geo_encode(uint8_t *geo_hash, uint32_t len)
-// {
-//     if (geo_hash == NULL)
-//     {
-//         goto ret1;
-//     }
+void geo_encode(uint8_t *geo_hash, uint32_t len)
+{
+    char *ret = is_geo_hash_in_country(geo_hash, len);
+    if (ret != NULL)
+    {
+        print_colomn(geo_hash, len, NO_ENTER_C);
+        printf("\t\t\t\t\t%s\n", ret);
+        return;
+    }
 
-//     gps_t gps[4];
-//     geo_hash_gps(geo_hash, len, gps);
-//     for (uint32_t j = 0; j < 255)
-//     {
+    for (uint32_t i = 0; i < 32; i++)
+    {
+        uint8_t *geo_hash_new = malloc(len + 1);
+        if (geo_hash_new == NULL)
+        {
+            goto error1;
+        }
+        memcpy(geo_hash_new, geo_hash, len);
+        geo_hash_new[len] = get_base32(i);
+        geo_encode(geo_hash_new, len + 1);
+        free(geo_hash_new);
+    }
 
-//     }
-//     country_geo_t *get_parse_geo();
-
-
-// ret1:
-//     uint8_t *geo_hash_n = (uint8_t *)malloc(sizeof(len + 1));
-//     if (geo_hash_n == NULL)
-//     {
-//         goto error1;
-//     }
-//     memcpy(geo_hash_n, geo_hash, len);
-//     free(geo_hash);
-
-//     for (uint32_t i = 0; i < 32; i++)
-//     {
-//         geo_hash_n[len] = get_base32(i);
-//         geo_encode(geo_hash_n, len);
-//     }
-
-//     return;
-
-// error1:
-//     printf("malloc error\n");
-//     return;
-// }
+    return;
+error1:
+    printf("malloc error\n");
+    return;
+}
 
 int main()
 {
@@ -63,6 +54,10 @@ int main()
     // gps.lon = 116.5998310000;
     // geo_hash(gps, buf, 8);
 
-    test();
+    // test();
+    uint8_t test;
+    geo_encode(&test, 0);
+
+
     return 0;
 }
