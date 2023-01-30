@@ -11,6 +11,12 @@ typedef struct
     double lon;//经度
 } PACKED gps_t;
 
+typedef struct
+{
+    gps_t p1;
+    gps_t p2;
+} PACKED line_t;
+
 typedef enum print_type
 {
     D = 0,

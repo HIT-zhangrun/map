@@ -232,6 +232,12 @@ char *is_point_in_country(gps_t point)
     return NULL;
 }
 
+// char *is_country_in_region(gps_t *gps, uint32_t num)
+// {
+
+//     return NULL;
+// }
+
 char *is_geo_hash_in_country(uint8_t *geo_hash, uint32_t len)
 {
     if (geo_hash == NULL || len == 0)
