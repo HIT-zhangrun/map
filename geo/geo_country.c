@@ -3,10 +3,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <sys/stat.h>
-#include "geo_hash.h"
 #include "cJSON.h"
 #include "geo_country.h"
-#include "math_lib.h"
 
 static country_geo_t country_geo[255] = {0};
 
@@ -276,15 +274,15 @@ char *is_geo_hash_in_country(uint8_t *geo_hash, uint32_t len)
     return NULL;
 }
 
-void test()
-{
-    uint8_t geo_hash[] = "wx4gjk32";
-    for (uint32_t i = 0; i < 8; i++)
-    {
-        char *test = is_geo_hash_in_country(geo_hash, i);
-        if (test != NULL)
-        {
-            printf("find it %d in %s\n", i, test);
-        }
-    }
-}
+// void test()
+// {
+//     uint8_t geo_hash[] = "wx4gjk32";
+//     for (uint32_t i = 0; i < 8; i++)
+//     {
+//         char *test = is_geo_hash_in_country(geo_hash, i);
+//         if (test != NULL)
+//         {
+//             printf("find it %d in %s\n", i, test);
+//         }
+//     }
+// }

@@ -1,21 +1,7 @@
 #ifndef __GEO_HASH__
 #define __GEO_HASH__
 
-#ifndef PACKED
-#define PACKED __attribute__((packed))
-#endif
-
-typedef struct
-{
-    double lat;//纬度
-    double lon;//经度
-} PACKED gps_t;
-
-typedef struct
-{
-    gps_t p1;
-    gps_t p2;
-} PACKED line_t;
+#include "math_lib.h"
 
 typedef enum print_type
 {

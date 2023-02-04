@@ -39,24 +39,14 @@ error1:
 
 int main()
 {
-    uint8_t buf[100];
-    parse_geo_country();
+    // uint8_t buf[100];
+    // parse_geo_country();
+
+    test();
 
 
-    // gps_t gps_test;
-    // gps_test.lat = 39.923201;
-    // gps_test.lon = 116.390705;
-
-    // geo_hash(gps_test, buf, 10);
-
-    // gps_t gps;
-    // gps.lat = 39.9257460000;
-    // gps.lon = 116.5998310000;
-    // geo_hash(gps, buf, 8);
-
-    // test();
-    uint8_t test;
-    geo_encode(&test, 0);
+    // uint8_t test;
+    // geo_encode(&test, 0);
 
 
     return 0;
