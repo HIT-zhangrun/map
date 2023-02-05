@@ -212,11 +212,11 @@ char *is_point_in_country(gps_t point)
 
     for (uint32_t i = 0; i < 254; i++)
     {
-        uint32_t region_num = get_parse_geo()[i].region_num;
+        uint32_t region_num = geo[i].region_num;
         for (uint32_t j = 0; j < region_num; j++)
         {
-            uint32_t gps_num = get_parse_geo()[i].region[j].gps_num;
-            gps_t *gps = get_parse_geo()[i].region[j].gps;
+            uint32_t gps_num = geo[i].region[j].gps_num;
+            gps_t *gps = geo[i].region[j].gps;
 
             uint32_t ret = point_in_polygon(gps_num, gps, point);
 
@@ -236,16 +236,102 @@ char *is_point_in_country(gps_t point)
 //     return NULL;
 // }
 
+uint8_t is_geo_cross_countries(gps_t *geo_points)
+{
+    line_t line_1 = point_to_line(geo_points[0], geo_points[1]);
+    line_t line_2 = point_to_line(geo_points[1], geo_points[2]);
+    line_t line_3 = point_to_line(geo_points[2], geo_points[3]);
+    line_t line_4 = point_to_line(geo_points[3], geo_points[0]);
+
+    uint8_t ret;
+
+    country_geo_t *geo = get_parse_geo();
+
+    for (uint32_t i = 0; i < 254; i++)
+    {
+        uint32_t region_num = geo[i].region_num;
+        for (uint32_t j = 0; j < region_num; j++)
+        {
+            uint32_t gps_num = geo[i].region[j].gps_num;
+            gps_t *gps = geo[i].region[j].gps;
+
+            line_t line_geo = point_to_line(gps[0], gps[gps_num - 1]);
+
+            ret = is_line_segment_cross(line_1, line_geo);
+            if (ret) goto ret_1;
+            ret = is_line_segment_cross(line_2, line_geo);
+            if (ret) goto ret_1;
+            ret = is_line_segment_cross(line_3, line_geo);
+            if (ret) goto ret_1;
+            ret = is_line_segment_cross(line_4, line_geo);
+            if (ret) goto ret_1;
+
+            for (uint32_t k = 0; k < gps_num - 1; k++)
+            {
+                line_geo = point_to_line(gps[k], gps[k + 1]);
+
+                ret = is_line_segment_cross(line_1, line_geo);
+                if (ret) goto ret_1;
+                ret = is_line_segment_cross(line_2, line_geo);
+                if (ret) goto ret_1;
+                ret = is_line_segment_cross(line_3, line_geo);
+                if (ret) goto ret_1;
+                ret = is_line_segment_cross(line_4, line_geo);
+                if (ret) goto ret_1;
+            }
+        }
+    }
+
+    return 0;
+
+ret_1:
+    return 1;
+}
+
+uint8_t is_countries_in_geo(gps_t *geo_points)
+{
+    country_geo_t *geo = get_parse_geo();
+
+    for (uint32_t i = 0; i < 254; i++)
+    {
+        uint32_t region_num = geo[i].region_num;
+        for (uint32_t j = 0; j < region_num; j++)
+        {
+            uint32_t gps_num = geo[i].region[j].gps_num;
+            gps_t *gps = geo[i].region[j].gps;
+
+            for (uint32_t k = 0; k < gps_num; k++)
+            {
+                uint32_t ret = point_in_polygon(4, geo_points, gps[0]);
+                if (ret)
+                {
+                    goto ret_1;
+                }
+            }
+        }
+    }
+
+    return 0;
+
+ret_1:
+    return 1;
+}
+
 char *is_geo_hash_in_country(uint8_t *geo_hash, uint32_t len)
 {
     if (geo_hash == NULL || len == 0)
     {
-        return NULL;
+        goto ret_0;
     }
 
     gps_t gps[4];
 
-    geo_hash_gps(geo_hash, len, gps);
+    geo_hash_gps(geo_hash, len, gps);//将geo hash解析成4点gps
+
+    if (is_geo_cross_countries(gps))//geo hash与任意边界有交点表示此geo不能表示区域，继续向下分割
+    {
+        goto ret_0;
+    }
 
     char *point1 = is_point_in_country(gps[0]);
 
@@ -255,34 +341,45 @@ char *is_geo_hash_in_country(uint8_t *geo_hash, uint32_t len)
 
     char *point4 = is_point_in_country(gps[3]);
 
-    if (point1 == NULL && point2 == NULL && point3 == NULL && point4 == NULL)
-    {
-        char *no_country = "NONE";
-        return no_country;
-    }
-
     if (point1 == NULL || point2 == NULL || point3 == NULL || point4 == NULL)
     {
-        return NULL;
+        goto situation_1;
     }
 
+    goto situation_2;
+
+situation_1:
+    if (point1 != NULL || point2 != NULL || point3 != NULL || point4 != NULL)
+    {
+        goto ret_0;
+    }
+
+    if (is_countries_in_geo(gps))
+    {
+        goto ret_0;
+    }
+
+    char *no_country = "NONE";
+    return no_country;
+
+situation_2:
     if (0 == strcmp(point1, point2) && 0 == strcmp(point3, point4) && 0 == strcmp(point1, point3))
     {
         return point1;
     }
 
+    goto ret_0;
+
+ret_0:
     return NULL;
 }
 
-// void test()
-// {
-//     uint8_t geo_hash[] = "wx4gjk32";
-//     for (uint32_t i = 0; i < 8; i++)
-//     {
-//         char *test = is_geo_hash_in_country(geo_hash, i);
-//         if (test != NULL)
-//         {
-//             printf("find it %d in %s\n", i, test);
-//         }
-//     }
-// }
+void test()
+{
+    uint8_t geo_hash[] = "wx4epb8wasdqwwfdefe";
+    gps_t gps[4];
+    geo_hash_gps(geo_hash, 2, gps);//将geo hash解析成4点gps
+
+
+    printf("%d\n", is_geo_cross_countries(gps));//geo hash与任意边界有交点表示此geo不能表示区域，继续向下分割
+}

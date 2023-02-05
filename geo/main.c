@@ -39,14 +39,13 @@ error1:
 
 int main()
 {
-    // uint8_t buf[100];
-    // parse_geo_country();
+    parse_geo_country();
 
-    test();
+    // test();
 
 
-    // uint8_t test;
-    // geo_encode(&test, 0);
+    uint8_t test;
+    geo_encode(&test, 0);
 
 
     return 0;

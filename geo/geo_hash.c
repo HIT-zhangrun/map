@@ -239,6 +239,11 @@ void geo_hash_gps(uint8_t *geo_hash, uint32_t len, gps_t *gps)
 
     gps[3].lat = lat_l;
     gps[3].lon = lon_l;
+
+    // printf("%0.10lf, %0.10lf\n", gps[0].lat, gps[0].lon);
+    // printf("%0.10lf, %0.10lf\n", gps[1].lat, gps[1].lon);
+    // printf("%0.10lf, %0.10lf\n", gps[2].lat, gps[2].lon);
+    // printf("%0.10lf, %0.10lf\n", gps[3].lat, gps[3].lon);
 }
 
 // void test()

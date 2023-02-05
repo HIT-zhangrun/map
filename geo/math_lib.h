@@ -31,7 +31,11 @@ typedef struct
 
 uint32_t point_in_polygon(uint32_t num, gps_t *points, gps_t gps);
 double multiply_2(vector_t v1, vector_t v2);
+vector_t point_to_vector(gps_t p_1, gps_t p_2);
+vector_t line_to_vector(line_t line);
+line_t point_to_line(gps_t gps_1, gps_t gps_2);
+uint8_t is_line_segment_cross(line_t l_1, line_t l_2);
 
-void test();
+// void test();
 
 #endif

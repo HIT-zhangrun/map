@@ -20,6 +20,6 @@ void parse_geo_country();
 country_geo_t *get_parse_geo();
 char *is_point_in_country(gps_t point);
 char *is_geo_hash_in_country(uint8_t *geo_hash, uint32_t len);
-// void test();
+void test();
 
 #endif

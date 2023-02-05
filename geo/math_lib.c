@@ -55,9 +55,11 @@ uint8_t is_need_reverse(gps_t *gps, uint32_t num)
 uint32_t point_in_polygon(uint32_t num, gps_t *points, gps_t gps)
 {
     gps_t *polygon = NULL;
-    while (polygon == NULL)
+
+    polygon = (gps_t *)malloc(sizeof(gps_t) * num);
+    if (polygon == NULL)
     {
-        polygon = (gps_t *)malloc(sizeof(gps_t) * num);
+        goto error;
     }
 
     memcpy(polygon, points, sizeof(gps_t) * num);
@@ -85,6 +87,7 @@ uint32_t point_in_polygon(uint32_t num, gps_t *points, gps_t gps)
 
     return c;
 error:
+    printf("malloc error\n");
     return 0;
 }
 
@@ -94,13 +97,31 @@ double multiply_2(vector_t v1, vector_t v2)
     return v1.x * v2.y - v2.x * v1.y;
 }
 
-vector_t cal_2point_vector(gps_t p_1, gps_t p_2)
+vector_t point_to_vector(gps_t p_1, gps_t p_2)
 {
     vector_t vector;
     vector.x = p_2.lon - p_1.lon;
     vector.y = p_2.lat - p_1.lat;
 
     return vector;
+}
+
+vector_t line_to_vector(line_t line)
+{
+    vector_t vector;
+    vector.x = line.p2.lon - line.p1.lon;
+    vector.y = line.p2.lat - line.p1.lat;
+
+    return vector;
+}
+
+line_t point_to_line(gps_t gps_1, gps_t gps_2)
+{
+    line_t line;
+    line.p1 = gps_1;
+    line.p2 = gps_2;
+
+    return line;
 }
 
 // 判断两个线段是否相交
@@ -111,36 +132,36 @@ uint8_t is_line_segment_cross(line_t l_1, line_t l_2)
     gps_t c = l_2.p1;
     gps_t d = l_2.p2;
 
-    vector_t ab = cal_2point_vector(a, b);
-    vector_t ad = cal_2point_vector(a, d);
-    vector_t ac = cal_2point_vector(a, c);
+    vector_t ab = point_to_vector(a, b);
+    vector_t ad = point_to_vector(a, d);
+    vector_t ac = point_to_vector(a, c);
 
-    vector_t cd = cal_2point_vector(c, d);
-    vector_t ca = cal_2point_vector(c, a);
-    vector_t cb = cal_2point_vector(c, b);
+    vector_t cd = point_to_vector(c, d);
+    vector_t ca = point_to_vector(c, a);
+    vector_t cb = point_to_vector(c, b);
 
     double ret_1 = multiply_2(ab, ad) * multiply_2(ab, ac);
-    double ret_2 = multiply_2(ab, ad) * multiply_2(ab, ac);
+    double ret_2 = multiply_2(cd, ca) * multiply_2(cd, cb);
 
-    return ((ret_1 * ret_2) <= 0);
+    return ((ret_1 <= 0) && (ret_2 <= 0));
 }
 
-void test()
-{
-    line_t line_1;
-    line_t line_2;
+// void test()
+// {
+    // line_t line_1;
+    // line_t line_2;
 
-    line_1.p1.lat = 0;  //y
-    line_1.p1.lon = 0;
+    // line_1.p1.lat = 0;  //y
+    // line_1.p1.lon = 0;
 
-    line_1.p2.lat = 1;
-    line_1.p2.lon = 0;
+    // line_1.p2.lat = 1;
+    // line_1.p2.lon = 0;
 
-    line_2.p1.lat = 0;
-    line_2.p1.lon = 1;
+    // line_2.p1.lat = 0;
+    // line_2.p1.lon = 1;
 
-    line_2.p2.lat = 0.5;
-    line_2.p2.lon = 1;
+    // line_2.p2.lat = 0.5;
+    // line_2.p2.lon = 1;
 
-    printf("%d\n", is_line_segment_cross(line_1, line_2));
-}
+    // printf("%d\n", is_line_segment_cross(line_1, line_2));
+// }
