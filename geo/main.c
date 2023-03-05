@@ -7,6 +7,7 @@
 #include "cJSON.h"
 #include "geo_country.h"
 #include "math_lib.h"
+#include "time.h"
 
 void geo_encode(uint8_t *geo_hash, uint32_t len)
 {
@@ -39,13 +40,14 @@ error1:
 
 int main()
 {
-    parse_geo_country();
+    // 解析geo.json数据
+    // parse_geo_country();
 
     // test();
 
 
-    uint8_t test;
-    geo_encode(&test, 0);
+    // uint8_t test;
+    // geo_encode(&test, 0);
 
 
     return 0;

@@ -6,6 +6,8 @@
 #include "cJSON.h"
 #include "geo_country.h"
 
+#define GEO_JSON_FILE_DIR "/home/zhangrun/code/map/geo-countries/data/countries.geojson"
+
 static country_geo_t country_geo[255] = {0};
 
 size_t get_file_size(const char *filepath)
@@ -97,7 +99,7 @@ cJSON *prepare_parse_json(const char *filePath)
 
 void parse_geo_country()
 {
-    char *filename = "/home/zhangrun/code/map/geo-countries/data/countries.geojson";
+    char *filename = GEO_JSON_FILE_DIR;
     cJSON *pJson = NULL;
     cJSON *pTemp = NULL;
     cJSON *country_p = NULL;
@@ -374,12 +376,12 @@ ret_0:
     return NULL;
 }
 
-void test()
-{
-    uint8_t geo_hash[] = "wx4epb8wasdqwwfdefe";
-    gps_t gps[4];
-    geo_hash_gps(geo_hash, 2, gps);//将geo hash解析成4点gps
+// void test()
+// {
+//     uint8_t geo_hash[] = "wx4epb8wasdqwwfdefe";
+//     gps_t gps[4];
+//     geo_hash_gps(geo_hash, 2, gps);//将geo hash解析成4点gps
 
 
-    printf("%d\n", is_geo_cross_countries(gps));//geo hash与任意边界有交点表示此geo不能表示区域，继续向下分割
-}
+//     printf("%d\n", is_geo_cross_countries(gps));//geo hash与任意边界有交点表示此geo不能表示区域，继续向下分割
+// }

@@ -25,6 +25,8 @@ set(SOURCES
     geo_country.c
     math_lib.c
     cJSON.c
+    time/timestamp.c
+    log/log.c
 )
 
 # Add an executable with the above sources
@@ -33,6 +35,6 @@ add_executable(geo_encode ${SOURCES})
 # Set the directories that should be included in the build command for this target
 # when running g++ these will be included as -I/directory/path/
 target_include_directories(geo_encode
-    PRIVATE
-        ${PROJECT_SOURCE_DIR}/*.h
+    PUBLIC
+        ${PROJECT_SOURCE_DIR}
 )
