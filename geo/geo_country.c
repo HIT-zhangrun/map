@@ -97,7 +97,7 @@ cJSON *prepare_parse_json(const char *filePath)
 
 void parse_geo_country()
 {
-    char *filename = "../geo-countries/data/countries.geojson";
+    char *filename = "/home/zhangrun/code/map/geo-countries/data/countries.geojson";
     cJSON *pJson = NULL;
     cJSON *pTemp = NULL;
     cJSON *country_p = NULL;
