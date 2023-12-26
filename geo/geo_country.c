@@ -6,7 +6,7 @@
 #include "cJSON.h"
 #include "geo_country.h"
 
-#define GEO_JSON_FILE_DIR "/home/zhangrun/code/map/geo-countries/data/countries.geojson"
+#define GEO_JSON_FILE_DIR "../geo-countries/data/countries.geojson"
 
 static country_geo_t country_geo[255] = {0};
 

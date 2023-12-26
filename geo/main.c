@@ -40,14 +40,14 @@ error1:
 
 int main()
 {
-    // 解析geo.json数据
-    // parse_geo_country();
+    //解析geo.json数据
+    parse_geo_country();
 
     // test();
 
 
-    // uint8_t test;
-    // geo_encode(&test, 0);
+    uint8_t test;
+    geo_encode(&test, 0);
 
 
     return 0;
