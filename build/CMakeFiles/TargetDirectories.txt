@@ -1,0 +1,3 @@
+/home/zhangrun/code/map/build/CMakeFiles/geo_encode.dir
+/home/zhangrun/code/map/build/CMakeFiles/edit_cache.dir
+/home/zhangrun/code/map/build/CMakeFiles/rebuild_cache.dir

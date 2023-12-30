@@ -1,0 +1,37 @@
+[
+{
+  "directory": "/home/zhangrun/code/map/build",
+  "command": "/usr/bin/gcc  -I/home/zhangrun/code/map/geo -g -o CMakeFiles/geo_encode.dir/main.c.o -c /home/zhangrun/code/map/geo/main.c",
+  "file": "/home/zhangrun/code/map/geo/main.c"
+},
+{
+  "directory": "/home/zhangrun/code/map/build",
+  "command": "/usr/bin/gcc  -I/home/zhangrun/code/map/geo -g -o CMakeFiles/geo_encode.dir/geo_hash.c.o -c /home/zhangrun/code/map/geo/geo_hash.c",
+  "file": "/home/zhangrun/code/map/geo/geo_hash.c"
+},
+{
+  "directory": "/home/zhangrun/code/map/build",
+  "command": "/usr/bin/gcc  -I/home/zhangrun/code/map/geo -g -o CMakeFiles/geo_encode.dir/geo_country.c.o -c /home/zhangrun/code/map/geo/geo_country.c",
+  "file": "/home/zhangrun/code/map/geo/geo_country.c"
+},
+{
+  "directory": "/home/zhangrun/code/map/build",
+  "command": "/usr/bin/gcc  -I/home/zhangrun/code/map/geo -g -o CMakeFiles/geo_encode.dir/math_lib.c.o -c /home/zhangrun/code/map/geo/math_lib.c",
+  "file": "/home/zhangrun/code/map/geo/math_lib.c"
+},
+{
+  "directory": "/home/zhangrun/code/map/build",
+  "command": "/usr/bin/gcc  -I/home/zhangrun/code/map/geo -g -o CMakeFiles/geo_encode.dir/cJSON.c.o -c /home/zhangrun/code/map/geo/cJSON.c",
+  "file": "/home/zhangrun/code/map/geo/cJSON.c"
+},
+{
+  "directory": "/home/zhangrun/code/map/build",
+  "command": "/usr/bin/gcc  -I/home/zhangrun/code/map/geo -g -o CMakeFiles/geo_encode.dir/time/timestamp.c.o -c /home/zhangrun/code/map/geo/time/timestamp.c",
+  "file": "/home/zhangrun/code/map/geo/time/timestamp.c"
+},
+{
+  "directory": "/home/zhangrun/code/map/build",
+  "command": "/usr/bin/gcc  -I/home/zhangrun/code/map/geo -g -o CMakeFiles/geo_encode.dir/log/log.c.o -c /home/zhangrun/code/map/geo/log/log.c",
+  "file": "/home/zhangrun/code/map/geo/log/log.c"
+}
+]

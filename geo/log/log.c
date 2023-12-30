@@ -1,14 +1,15 @@
 #include "log.h"
 #include "time/timestamp.h"
+#include <stdio.h>
 
-const static char log_level[4][10] = {"INFO", "DEBUG", "WARN", "ERROR"};
+const static char log_level[6][10] = {"TRACE", "INFO", "DEBUG", "WARN", "ERROR", "FATAL"};
 INIT void log_init()
 {
     FILE *file = fopen("log.log", "w");
     fclose(file);
 }
 
-void logger(LOG_LEVEL level, char *fromat, va_list args)
+void logger(LOG_LEVEL level, const char *dir, int line, const char *fromat, va_list args)
 {
     FILE *file = fopen("log.log", "aw");
 
@@ -20,7 +21,8 @@ void logger(LOG_LEVEL level, char *fromat, va_list args)
     uint32_t len = 0;
 
     len += snprintf(buf + len, MAX_LOG_LEN - len, "[%s] [%s]", time, log_level[level]);
-    len += snprintf(buf + len, MAX_LOG_LEN - len, fromat + 2, args);
+    len += snprintf(buf + len, MAX_LOG_LEN - len, "[%s:%d]", dir, line);
+    len += snprintf(buf + len, MAX_LOG_LEN - len, fromat, args);
     len += snprintf(buf + len, MAX_LOG_LEN - len, "\n");
 
     printf("%s", buf);
@@ -29,13 +31,18 @@ void logger(LOG_LEVEL level, char *fromat, va_list args)
     fclose(file);
 }
 
-void print_log(LOG_LEVEL loglevel, char *fromat, ...)
+void print_log(LOG_LEVEL loglevel, char *dir, uint32_t line, const char *fromat, ...)
 {
     va_list args;
 
     va_start(args, fromat);
 
-    logger(loglevel, fromat, args);
+    printf(fromat, args);
+    printf("\n");
+    printf("%s\n", fromat);
+    printf("%d\n", va_arg(args, int));
+
+    // logger(loglevel, dir, line, fromat, args);
 
     va_end(args);
 }

@@ -1,0 +1,1 @@
+/usr/bin/gcc -g CMakeFiles/geo_encode.dir/main.c.o CMakeFiles/geo_encode.dir/geo_hash.c.o CMakeFiles/geo_encode.dir/geo_country.c.o CMakeFiles/geo_encode.dir/math_lib.c.o CMakeFiles/geo_encode.dir/cJSON.c.o CMakeFiles/geo_encode.dir/time/timestamp.c.o CMakeFiles/geo_encode.dir/log/log.c.o -o geo_encode 

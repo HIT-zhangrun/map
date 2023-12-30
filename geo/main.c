@@ -8,6 +8,8 @@
 #include "geo_country.h"
 #include "math_lib.h"
 #include "time.h"
+#include "log/log.h"
+#include <stdarg.h>
 
 void geo_encode(uint8_t *geo_hash, uint32_t len)
 {
@@ -36,6 +38,23 @@ void geo_encode(uint8_t *geo_hash, uint32_t len)
 error1:
     printf("malloc error\n");
     return;
+}
+
+#define test(fmt, ...) printk(fmt, __VA_ARGS__)
+
+void printk(const char *fromat, ...)
+{
+    va_list args;
+
+    va_start(args, fromat);
+    printf("%s\n", fromat);
+
+    char buf[100];
+
+    snprintf(buf, 100, fromat, args);
+    printf("%s\n", buf);
+
+    va_end(args);
 }
 
 int main()
